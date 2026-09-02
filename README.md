@@ -1,10 +1,8 @@
-# 🥔 Modelagem e Visualização 3D de um Parabolóide Hiperbólico
+# 🫓 Modelagem e Visualização 3D de um Parabolóide Hiperbólico
 
-[svg](https://github.com/pimentelt/projeto-paraboloide#-modelagem-e-visualização-3d-de-um-parabolóide-hiperbólico)
 
 ## 📝 Descrição
 
-[svg](https://github.com/pimentelt/projeto-paraboloide#-descrição)
 
 Este projeto foi desenvolvido em linguagem **C** como uma aplicação de modelagem e visualização computacional tridimensional, utilizando a biblioteca **raylib**.
 
@@ -18,7 +16,6 @@ O desenvolvimento busca estabelecer uma relação entre a modelagem computaciona
 
 ## 📐 Modelo Matemático
 
-[svg](https://github.com/pimentelt/projeto-paraboloide#-modelo-matemático)
 
 A superfície é definida pela função de duas variáveis:
 
@@ -46,7 +43,6 @@ A representação computacional é obtida por meio da discretização do domíni
 
 ## 🖥️ Visualização Computacional
 
-[svg](https://github.com/pimentelt/projeto-paraboloide#-visualização-computacional)
 
 A superfície tridimensional é renderizada utilizando a biblioteca **raylib**, permitindo sua visualização em um ambiente interativo.
 
@@ -63,7 +59,6 @@ A aplicação atualmente apresenta:
 
 ## 🐜 Simulação da Formiga
 
-[svg](https://github.com/pimentelt/projeto-paraboloide#-simulação-da-formiga)
 
 Como etapa futura do projeto, será implementada uma formiga capaz de se deslocar sobre a superfície modelada.
 
@@ -83,7 +78,6 @@ A intenção é que a posição da formiga seja determinada matematicamente pela
 
 ## 🧮 Conceitos Matemáticos
 
-[svg](https://github.com/pimentelt/projeto-paraboloide#-conceitos-matemáticos)
 
 O projeto utiliza e pretende explorar os seguintes conceitos:
 
@@ -102,7 +96,6 @@ O projeto utiliza e pretende explorar os seguintes conceitos:
 
 ## 💻 Linguagem, Biblioteca e Dependências
 
-[svg](https://github.com/pimentelt/projeto-paraboloide#-linguagem-biblioteca-e-dependências)
 
 - **Linguagem:** C
 - **Padrão:** C11
@@ -117,7 +110,6 @@ O projeto utiliza e pretende explorar os seguintes conceitos:
 
 ## 📁 Estrutura do Repositório
 
-[svg](https://github.com/pimentelt/projeto-paraboloide#-estrutura-do-repositório)
 
 ```text
 projeto-paraboloide/
