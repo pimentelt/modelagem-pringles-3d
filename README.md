@@ -8,7 +8,7 @@ Este projeto foi desenvolvido em linguagem **C** como uma aplicação de modelag
 
 O projeto tem como objetivo representar computacionalmente um **parabolóide hiperbólico**, uma superfície definida por uma função de duas variáveis, por meio da discretização de seu domínio e da construção de uma malha poligonal tridimensional.
 
-Como parte da evolução do projeto, será implementada futuramente a **simulação do movimento de uma formiga sobre a superfície**, utilizando conceitos matemáticos relacionados à descrição de trajetórias, vetores, derivadas parciais e vetor gradiente.
+O projeto também simula uma formiga em caminhada aleatória persistente sobre a superfície, mostrando sua posição, derivadas parciais, gradiente e vetor tangente.
 
 O desenvolvimento busca estabelecer uma relação entre a modelagem computacional e conceitos estudados nas disciplinas de **Cálculo II** e **Geometria Analítica**.
 
@@ -37,14 +37,22 @@ $$
 
 O par $(x,z)$ determina a posição do ponto no domínio horizontal, enquanto o valor $y=f(x,z)$ determina sua altura.
 
-A representação computacional é obtida por meio da discretização do domínio em uma grade de pontos. Os pontos adjacentes são conectados por triângulos, formando uma **malha poligonal** que aproxima a superfície matemática contínua.
+A representação computacional é obtida por meio da discretização de um domínio elíptico, definido por:
+
+$$
+\frac{x^2}{1{,}5^2}+\frac{z^2}{1{,}0^2}\leq 1
+$$
+
+O domínio tem semieixo de 1,5 unidade na direção de $x$ e 1,0 unidade na direção de $z$. A malha é construída com anéis concêntricos de pontos, conectados por triângulos, de modo que a borda da superfície tenha formato elíptico.
 
 ---
 
 ## 🖥️ Visualização Computacional
 
 
-A superfície tridimensional é renderizada utilizando a biblioteca **raylib**, permitindo sua visualização em um ambiente interativo.
+A cena 3D permanece nítida; somente o corpo da formiga é desenhado em resolução 20% menor, com ampliação por pixels para um aspecto retrô. A trilha, as setas e os textos ficam nítidos. Os dados aparecem diretamente sobre o fundo, sem painel sólido. O visual também usa cores chapadas e saturadas, contraste escuro e formas facetadas.
+
+As expressões e os valores matemáticos usam a fonte Cambria instalada no Windows; os títulos e controles usam Segoe UI.
 
 A aplicação atualmente apresenta:
 
@@ -60,9 +68,41 @@ A aplicação atualmente apresenta:
 ## 🐜 Simulação da Formiga
 
 
-Como etapa futura do projeto, será implementada uma formiga capaz de se deslocar sobre a superfície modelada.
+O estado da formiga é descrito pelas coordenadas horizontais $(x(t),z(t))$. A coordenada vertical é sempre recalculada pela superfície:
 
-A trajetória será utilizada como elemento para explorar computacionalmente conceitos de **Cálculo II**, incluindo:
+$$
+y(t)=f(x(t),z(t))=0{,}2(x(t)^2-z(t)^2)
+$$
+
+A direção horizontal desejada muda em intervalos aleatórios. Para um ângulo de direção $\theta$, o vetor de movimento no domínio é $\mathbf{u}=(\cos\theta,\sin\theta)$, associando suas componentes a $x$ e $z$. A caminhada é persistente: a formiga mantém aproximadamente o rumo atual entre mudanças aleatórias de ângulo.
+
+As derivadas parciais e o gradiente são:
+
+$$
+f_x=\frac{\partial f}{\partial x}=0{,}4x, \qquad
+f_z=\frac{\partial f}{\partial z}=-0{,}4z, \qquad
+\nabla f=(f_x,f_z)
+$$
+
+Pela regra da cadeia, a direção horizontal é levantada para um vetor tangente à superfície:
+
+$$
+\mathbf{T}=\left(u_x,\ f_xu_x+f_zu_z,\ u_z\right), \qquad
+\widehat{\mathbf{T}}=\frac{\mathbf{T}}{\|\mathbf{T}\|}
+$$
+
+A formiga percorre a direção $\widehat{\mathbf{T}}$ com velocidade controlável. Ao se aproximar do limite elíptico, sua direção é refletida pela normal da borda para mantê-la no domínio. A trilha ciano mostra a trajetória parametrizada sobre a superfície. Setas destacam os vetores parciais $\mathbf{r}_x$ e $\mathbf{r}_z$, o gradiente, o vetor tangente à trajetória e a normal unitária. Os dados matemáticos aparecem diretamente sobre a cena.
+
+Controles disponíveis:
+
+- **Espaço:** pausar e continuar;
+- **R:** reiniciar a caminhada usando a mesma semente aleatória;
+- **N:** criar um novo percurso com outra semente;
+- **Setas esquerda/direita:** diminuir ou aumentar a velocidade;
+- **M:** alternar entre ocultar retas e caminho, mostrar apenas retas, apenas caminho ou ambos;
+- **Scroll do mouse:** aproximar ou afastar a câmera.
+
+O movimento aleatório não segue o gradiente; o gradiente é exibido para permitir a comparação entre o rumo escolhido e a direção de maior crescimento da função. A simulação explora conceitos de **Cálculo II**, incluindo:
 
 - Derivadas parciais;
 - Vetor gradiente;
@@ -72,7 +112,7 @@ A trajetória será utilizada como elemento para explorar computacionalmente con
 - Trajetórias sobre superfícies;
 - Relação entre a função e sua geometria.
 
-A intenção é que a posição da formiga seja determinada matematicamente pela superfície, evitando que seu movimento seja apenas uma animação independente da função.
+Uma etapa futura poderá acrescentar um modo em que a formiga siga o gradiente ou seu oposto.
 
 ---
 
@@ -115,5 +155,8 @@ O projeto utiliza e pretende explorar os seguintes conceitos:
 projeto-paraboloide/
 
 ├── main.c          # Programa principal e gerenciamento da visualização
+├── formiga.c       # Movimento e desenho da formiga sobre a superfície
+├── formiga.h       # Estrutura e funções da formiga
 ├── pringles.c      # Função matemática e construção da malha
-└── pringles.h      # Declarações das funções do módulo
+├── pringles.h      # Declarações das funções do módulo
+└── executar.bat    # Compila e executa no Windows com MSYS2 UCRT64

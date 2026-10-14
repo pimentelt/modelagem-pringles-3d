@@ -1,0 +1,20 @@
+# Arquivos gerados pela compilação
+/build/obj/
+/build/pringles
+/build/pringles.exe
+/pringles-dev.exe
+
+# Configurações locais do editor
+/.vscode/
+
+# Pastas temporárias criadas durante tentativas anteriores de compilação
+/-lgdi32/
+/-lmset/
+/-lopengl32/
+/-lraylib/
+/-lwinmm/
+/-o/
+/-std/
+/-Wall/
+/-Wextra/
+/c11/
