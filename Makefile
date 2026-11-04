@@ -1,45 +1,49 @@
-# Compila o projeto com raylib em Linux (Ubuntu) ou Windows com MSYS2 UCRT64.
+# Compila a raylib 6.0 vendorizada e o projeto, sem instalação externa da raylib.
 
 CC = gcc
+AR = ar
 CFLAGS ?= -Wall -Wextra -std=c11
 BUILD_DIR = build
 OBJ_DIR = $(BUILD_DIR)/obj
+RAYLIB_SRC = third_party/raylib/src
+RAYLIB_BUILD_DIR = $(BUILD_DIR)/raylib
+RAYLIB_LIB = $(RAYLIB_BUILD_DIR)/libraylib.a
 SOURCES = main.c pringles.c formiga.c
 OBJECTS = $(SOURCES:%.c=$(OBJ_DIR)/%.o)
 
-# Permite substituir esses valores na linha de comando, se a raylib estiver
-# instalada em outro local ou usar uma configuração diferente.
 ifeq ($(OS),Windows_NT)
-    RAYLIB_PREFIX ?= C:/msys64/ucrt64
-    RAYLIB_CFLAGS ?= -I$(RAYLIB_PREFIX)/include
-    RAYLIB_LIBS ?= -L$(RAYLIB_PREFIX)/lib -lraylib -lopengl32 -lgdi32 -lwinmm
     BIN = $(BUILD_DIR)/pringles.exe
-    RUN = ./$(BIN)
+    SYSTEM_LIBS = -static-libgcc -lopengl32 -lgdi32 -lwinmm -lm
 else
-    RAYLIB_CFLAGS ?= $(shell pkg-config --cflags raylib 2>/dev/null)
-    RAYLIB_LIBS ?= $(shell pkg-config --libs raylib 2>/dev/null)
-    ifeq ($(strip $(RAYLIB_LIBS)),)
-        RAYLIB_LIBS = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
-    endif
     BIN = $(BUILD_DIR)/pringles
-    RUN = ./$(BIN)
+    SYSTEM_LIBS = -lGL -lm -lpthread -ldl -lrt -lX11
 endif
 
-.PHONY: all run clean
+.PHONY: all run clean FORCE
 
 all: $(BIN)
 
-$(BIN): $(OBJECTS)
-	$(CC) $(OBJECTS) -o $@ $(RAYLIB_LIBS) -lm
+$(BIN): $(OBJECTS) $(RAYLIB_LIB)
+	$(CC) $(OBJECTS) $(RAYLIB_LIB) -o $@ $(SYSTEM_LIBS)
 
 $(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
-	$(CC) $(CFLAGS) $(RAYLIB_CFLAGS) -I. -c $< -o $@
+	$(CC) $(CFLAGS) -I$(RAYLIB_SRC) -I. -c $< -o $@
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
+$(RAYLIB_BUILD_DIR):
+	mkdir -p $(RAYLIB_BUILD_DIR)
+
+# Always call raylib's own makefile; it incrementally rebuilds changed modules.
+$(RAYLIB_LIB): FORCE | $(RAYLIB_BUILD_DIR)
+	$(MAKE) -C $(RAYLIB_SRC) CC=$(CC) AR=$(AR) PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=STATIC RAYLIB_MODULE_AUDIO=FALSE RAYLIB_RELEASE_PATH=../../../$(RAYLIB_BUILD_DIR)
+
 run: $(BIN)
-	$(RUN)
+	./$(BIN)
 
 clean:
-	rm -f $(OBJECTS) $(BIN)
+	rm -f $(RAYLIB_SRC)/*.o
+	rm -rf $(BUILD_DIR)
+
+FORCE:

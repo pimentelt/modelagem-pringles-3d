@@ -136,27 +136,78 @@ O projeto utiliza e pretende explorar os seguintes conceitos:
 
 ## 💻 Linguagem, Biblioteca e Dependências
 
-
-- **Linguagem:** C
-- **Padrão:** C11
-- **Biblioteca gráfica:** raylib
-- **Bibliotecas utilizadas:** `raylib.h`, `rlgl.h`, `stdlib.h`, `math.h`
-- **Plataforma principal:** Linux
+- **Linguagem:** C11
+- **Biblioteca gráfica:** raylib 6.0, com código-fonte incluído em `third_party/raylib`
 - **Compilador:** GCC
-- **Sistema de construção:** CMake / GCC
-- **Renderização:** OpenGL através da infraestrutura gráfica do raylib
+- **Compilação:** GNU Make pelo terminal
+- **Plataformas:** Linux e Windows
+
+## ⚙️ Como Compilar e Executar
+
+A raylib é compilada como biblioteca estática a partir do código-fonte incluído no projeto. Não é necessário instalar raylib. O computador precisa ter GCC, GNU Make e as bibliotecas gráficas de desenvolvimento do sistema.
+
+### 🐧 Ubuntu (Linux)
+
+Instale o compilador, o Make e os cabeçalhos gráficos:
+
+```bash
+sudo apt install build-essential libgl1-mesa-dev libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev
+```
+
+Na pasta do projeto, compile e execute pelo terminal:
+
+```bash
+make
+make run
+```
+
+Para remover os arquivos gerados:
+
+```bash
+make clean
+```
+
+### 🪟 Windows (CMD ou PowerShell)
+
+No terminal MSYS2 UCRT64, instale apenas GNU Make (a raylib não precisa ser instalada):
+
+```sh
+pacman -S --needed mingw-w64-ucrt-x86_64-make
+```
+
+Depois, no CMD e dentro da pasta do projeto:
+
+```bat
+set "PATH=C:\msys64\ucrt64\bin;C:\msys64\usr\bin;%PATH%"
+C:\msys64\ucrt64\bin\mingw32-make.exe
+C:\msys64\ucrt64\bin\mingw32-make.exe run
+```
+
+Para limpar os arquivos gerados:
+
+```bat
+C:\msys64\ucrt64\bin\mingw32-make.exe clean
+```
+
+No PowerShell, configure o PATH com `$env:Path = "C:\msys64\ucrt64\bin;C:\msys64\usr\bin;$env:Path"` e use os mesmos comandos `C:\msys64\ucrt64\bin\mingw32-make.exe`.
+
+O executável é criado em `build/`. O Git ignora esse arquivo e os objetos da compilação.
 
 ---
-
 ## 📁 Estrutura do Repositório
 
 
 ```text
-projeto-paraboloide/
+modelagem-pringles-3d/
 
 ├── main.c          # Programa principal e gerenciamento da visualização
 ├── formiga.c       # Movimento e desenho da formiga sobre a superfície
 ├── formiga.h       # Estrutura e funções da formiga
 ├── pringles.c      # Função matemática e construção da malha
 ├── pringles.h      # Declarações das funções do módulo
-└── executar.bat    # Compila e executa no Windows com MSYS2 UCRT64
+├── Makefile        # Compila a raylib e o projeto pelo terminal
+└── third_party/
+    └── raylib/
+        ├── LICENSE
+        └── src/     # Código-fonte da raylib 6.0
+```
