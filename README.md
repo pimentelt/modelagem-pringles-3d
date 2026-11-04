@@ -169,13 +169,24 @@ make clean
 
 ### 🪟 Windows (CMD ou PowerShell)
 
-No terminal MSYS2 UCRT64, instale apenas GNU Make (a raylib não precisa ser instalada):
+Primeiro, instale o [MSYS2](https://www.msys2.org/) no caminho padrão `C:\msys64`. Abra **MSYS2 UCRT64** pelo menu Iniciar — `pacman` não funciona no PowerShell comum — e instale o compilador e o Make:
 
 ```sh
-pacman -S --needed mingw-w64-ucrt-x86_64-make
+pacman -Syu
+pacman -S --needed mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-make
 ```
 
-Depois, no CMD e dentro da pasta do projeto:
+Depois, na pasta do projeto, compile e execute.
+
+**PowerShell:**
+
+```powershell
+$env:Path = "C:\msys64\ucrt64\bin;C:\msys64\usr\bin;$env:Path"
+& "C:\msys64\ucrt64\bin\mingw32-make.exe"
+& "C:\msys64\ucrt64\bin\mingw32-make.exe" run
+```
+
+**CMD:**
 
 ```bat
 set "PATH=C:\msys64\ucrt64\bin;C:\msys64\usr\bin;%PATH%"
@@ -183,16 +194,9 @@ C:\msys64\ucrt64\bin\mingw32-make.exe
 C:\msys64\ucrt64\bin\mingw32-make.exe run
 ```
 
-Para limpar os arquivos gerados:
+Para limpar os arquivos gerados, use `mingw32-make.exe clean` com o mesmo prefixo de caminho. Se instalou o MSYS2 em outro local, substitua `C:\msys64` pelo caminho escolhido.
 
-```bat
-C:\msys64\ucrt64\bin\mingw32-make.exe clean
-```
-
-No PowerShell, configure o PATH com `$env:Path = "C:\msys64\ucrt64\bin;C:\msys64\usr\bin;$env:Path"` e use os mesmos comandos `C:\msys64\ucrt64\bin\mingw32-make.exe`.
-
-O executável é criado em `build/`. O Git ignora esse arquivo e os objetos da compilação.
-
+O executável é criado em `build/`. A raylib é compilada a partir do código incluído no projeto; não instale o pacote raylib.
 ---
 ## 📁 Estrutura do Repositório
 
