@@ -20,7 +20,7 @@
  * A malha é constituída por anéis concêntricos distribuídos em um domínio
  * elíptico e por triângulos que conectam vértices adjacentes.
  */
-
+#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <stdbool.h>
