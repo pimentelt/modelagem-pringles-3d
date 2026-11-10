@@ -13,6 +13,8 @@
  * funções para consultar sua posição, direção, gradiente e tangente, além de
  * desenhar seu corpo, seu caminho percorrido e os vetores auxiliares.
  */
+#include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 #include "formiga.h"
 #include "pringles.h"
